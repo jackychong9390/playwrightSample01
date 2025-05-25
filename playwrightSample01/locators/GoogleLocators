@@ -1,0 +1,5 @@
+module.exports = {
+  searchInput: 'input[name="q"]',
+  wikipediaLink: 'h3',
+  acceptCookiesButton: 'button:has-text("I agree"), button:has-text("Accept all")',
+};

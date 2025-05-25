@@ -1,0 +1,41 @@
+const locators = require('../locators/GoogleLocators');
+const { log } = require('../utils/logger');
+
+class GooglePage {
+  constructor(page) {
+    this.page = page;
+    this.searchInput = page.locator(locators.searchInput);
+    this.resultLink = page.locator(locators.wikipediaLink, { hasText: 'Wikipedia' });
+    this.acceptCookiesButton = page.locator(locators.acceptCookiesButton);
+  }
+
+  async open() {
+    log('Opening Google homepage...');
+    await this.page.goto('https://www.google.com');
+  }
+
+  async acceptCookies() {
+    log('Checking if cookie consent button exists...');
+    if (await this.acceptCookiesButton.count()) {
+      log('Clicking cookie consent button...');
+      await this.acceptCookiesButton.first().click();
+    } else {
+      log('No cookie consent dialog detected.');
+    }
+  }
+
+  async search(term) {
+    log(`Searching for: "${term}"`);
+    await this.searchInput.fill(term);
+    await this.page.keyboard.press('Enter');
+  }
+
+  async clickWikipediaResult() {
+    log('Waiting for search results...');
+    await this.page.waitForSelector(locators.wikipediaLink);
+    log('Clicking on Wikipedia search result...');
+    await this.resultLink.first().click();
+  }
+}
+
+module.exports = { GooglePage };

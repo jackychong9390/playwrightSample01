@@ -1,32 +1,23 @@
 const { chromium } = require('playwright');
+const { GooglePage } = require('../pages/GooglePage');
+const { log } = require('../utils/logger');
 
 (async () => {
-  // Launch browser
+  log('Launching browser...');
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext();
   const page = await context.newPage();
 
-  // Go to Google
-  await page.goto('https://www.google.com');
+  const google = new GooglePage(page);
 
-  // Accept cookies if the consent page appears (common in Europe)
-  const consentButton = page.locator('button:has-text("I agree"), button:has-text("Accept all")');
-  if (await consentButton.count()) {
-    await consentButton.first().click();
-  }
+  await google.open();
+  await google.acceptCookies();
+  await google.search('Wikipedia');
+  await google.clickWikipediaResult();
 
-  // Search for Wikipedia
-  await page.fill('input[name="q"]', 'Wikipedia');
-  await page.keyboard.press('Enter');
-
-  // Wait for results and click on Wikipedia link
-  await page.waitForSelector('h3');
-  const wikipediaLink = page.locator('h3', { hasText: 'Wikipedia' });
-  await wikipediaLink.first().click();
-
-  // Wait for Wikipedia to load
+  log('Waiting for Wikipedia page to fully load...');
   await page.waitForLoadState('domcontentloaded');
 
-  // Close browser
+  log('Test completed, closing browser.');
   await browser.close();
 })();
