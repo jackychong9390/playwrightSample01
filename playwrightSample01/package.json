@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "test": "npx playwright test",
+    "report": "npx playwright show-report",
     "perf-tests:dev": "cross-env environment=dev ARTILLERY_DISABLE_TELEMETRY=true npx artillery run --output ./reports/report-dev.json ./tests/perf-test.ts",
     "perf-tests:tst": "cross-env environment=tst ARTILLERY_DISABLE_TELEMETRY=true npx artillery run --output ./reports/report-tst.json ./tests/perf-test.ts",
     "perf-tests:stg": "cross-env environment=stg ARTILLERY_DISABLE_TELEMETRY=true npx artillery run --output ./reports/report-stg.json ./tests/perf-test.ts",
