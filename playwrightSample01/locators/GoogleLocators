@@ -1,5 +1,5 @@
 module.exports = {
-  searchInput: 'input[name="q"]',
+  searchInput: 'textarea[name="q"]', // updated
   wikipediaLink: 'h3',
   acceptCookiesButton: 'button:has-text("I agree"), button:has-text("Accept all")',
 };

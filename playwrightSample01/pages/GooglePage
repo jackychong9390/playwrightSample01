@@ -15,25 +15,25 @@ class GooglePage {
   }
 
   async acceptCookies() {
-    log('Checking if cookie consent button exists...');
+    log('Checking for cookie consent...');
     if (await this.acceptCookiesButton.count()) {
       log('Clicking cookie consent button...');
       await this.acceptCookiesButton.first().click();
     } else {
-      log('No cookie consent dialog detected.');
+      log('No cookie consent shown.');
     }
   }
 
   async search(term) {
-    log(`Searching for: "${term}"`);
+    log(`Typing in search term: "${term}" into textarea[name="q"]`);
     await this.searchInput.fill(term);
     await this.page.keyboard.press('Enter');
   }
 
   async clickWikipediaResult() {
-    log('Waiting for search results...');
+    log('Waiting for search result <h3> containing Wikipedia...');
     await this.page.waitForSelector(locators.wikipediaLink);
-    log('Clicking on Wikipedia search result...');
+    log('Clicking the Wikipedia result link...');
     await this.resultLink.first().click();
   }
 }
